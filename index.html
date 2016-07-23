@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>HIV/AIDS Info</title>
+
+    <link rel="icon" href="https://cdn3.iconfinder.com/data/icons/medical-7-1/512/ribbon_hiv_award_orange_blue-512.png" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/united/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="d3.geomap.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="style.css" media="screen" title="no title" charset="utf-8">
+
+    <script src="https://cdn.firebase.com/js/client/2.2.7/firebase.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" charset="utf-8"></script>
+    <script src="d3.geomap.dependencies.min.js" charset="utf-8"></script>
+    <script src="d3.geomap.min.js" charset="utf-8"></script>
+    <script src="countries.js" charset="utf-8"></script>
+    <script src="script.js" charset="utf-8"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand">HIV/AIDS Info</a>
+        </div>
+      </div>
+    </nav>
+
+
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-3 categoryListContainer">
+          <label for="year">Year: &nbsp;</label>
+          <select id="year" class="year" name="year">
+          </select>
+          <div class="list-group categoryList">
+          </div>
+          <div class="list-group subCategoryList">
+          </div>
+        </div>
+        <div class="col-md-9 mapBorder">
+          <div class="centered loading">
+            <img src="gears.svg"/>
+          </div>
+          <div class="emptyState">
+            <h4 class="centered">Select a <span style="color: red">HIV</span> statistic to show map data</h4>
+          </div>
+          <div class="mapContainer">
+            <svg width="900" height="550"></svg>
+            <h5 class="centered not-centered-y mapLabel"></h5>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </body>
+
+</html>

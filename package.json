@@ -1,0 +1,17 @@
+{
+  "name": "HIV-Information-Chloropleth-Map",
+  "version": "1.0.0",
+  "description": "HIV-Information-Chloropleth-Map",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node_modules/http-server/bin/http-server -o"
+  },
+  "author": "Ian Chu Te",
+  "license": "MIT",
+  "dependencies": {
+    "firebase": "^2.2.7",
+    "http-server": "^0.9.0"
+  },
+  "devDependencies": {}
+}

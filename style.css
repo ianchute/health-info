@@ -1,0 +1,66 @@
+body {
+  background-image: url("bg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  overflow-y: scroll;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loading {
+  top: 270px;
+  background-color: brown;
+  border-radius: 4px;
+  border: 4px black inset;
+}
+
+.emptyState h4 {
+  top: 270px;
+  background-color: white;
+  border: 4px black groove;
+  border-radius: 4px;
+}
+
+.not-centered-y {
+  top: 90%;
+  background-color: white;
+  text-align: center;
+}
+
+.container {
+  opacity: 0.95;
+}
+
+svg {
+  background-color: white;
+  border-radius: 4px;
+}
+
+.list-group {
+  max-height: 500px;
+  overflow-y:scroll;
+  box-sizing: border-box;
+}
+
+label {
+  margin-bottom: 5px;
+  color: white;
+}
+
+.year {
+  margin-bottom: 5px;
+}
+
+.active {
+  font-weight: bold;
+}
+
+h5 {
+  font-weight: bold;
+}
