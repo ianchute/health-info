@@ -1,5 +1,5 @@
-# hiv-map
-HIV Data Chloropleth Map Website
+# health-info
+World Health Info Website
 
 How to run:
 
