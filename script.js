@@ -1,6 +1,7 @@
-$(() => {
+$(document).ready(() => {
 
   $('[data-toggle="tooltip"]').tooltip()
+  $('body').fadeIn()
 
   const $categoryListContainer = $('.categoryListContainer')
 
@@ -26,8 +27,6 @@ $(() => {
   $yearSelect.val('2014')
 
   $.ajax('config.json').then(config => {
-
-    $('body').fadeIn()
 
     const countryCodes = countries.map(country => country['alpha-3'])
     const countryNames = Object.assign.apply(Object, countries.filter(country => country['alpha-3'] !== 'UMI').map(
@@ -194,6 +193,7 @@ $(() => {
         })
 
         const reset = (() => {
+
           $('a').removeClass('active')
           $mapContainer.fadeOut()
           $('.list-group').fadeOut(() => {

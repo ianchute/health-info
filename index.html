@@ -3,10 +3,10 @@
 
   <head>
     <meta charset="utf-8">
-    <title>HIV/AIDS Info</title>
+    <title>World Health Info</title>
     <script src="styleloader.js" charset="utf-8"></script>
 
-    <link rel="icon" href="https://cdn3.iconfinder.com/data/icons/medical-7-1/512/ribbon_hiv_award_orange_blue-512.png" media="screen" title="no title" charset="utf-8">
+    <link rel="icon" href="favicon.ico" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="d3.geomap.css" media="screen" title="no title" charset="utf-8">
 
     <script src="https://cdn.firebase.com/js/client/2.2.7/firebase.js"></script>
@@ -37,7 +37,7 @@
             </select>
             <script type="text/javascript">
               $(() => {
-                $('#theme').val(localStorage.getItem('theme') || 'simple').off().change(e => {
+                $('#theme').val(localStorage.getItem('theme') || 'lumen').off().change(e => {
                   localStorage.setItem('theme', $(e.target).val())
                   location.reload()
                 })
