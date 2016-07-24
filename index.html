@@ -11,9 +11,11 @@
     <link rel="stylesheet" href="style.css" media="screen" title="no title" charset="utf-8">
 
     <script src="https://cdn.firebase.com/js/client/2.2.7/firebase.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" charset="utf-8"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" charset="utf-8"></script>
     <script src="d3.geomap.dependencies.min.js" charset="utf-8"></script>
     <script src="d3.geomap.min.js" charset="utf-8"></script>
+    <script src="lib.js" charset="utf-8"></script>
     <script src="countries.js" charset="utf-8"></script>
     <script src="script.js" charset="utf-8"></script>
   </head>
@@ -31,23 +33,51 @@
     <div class="container">
 
       <div class="row">
-        <div class="col-md-3 categoryListContainer">
-          <label for="year">Year: &nbsp;</label>
-          <select id="year" class="year" name="year">
+        <div class="col-md-3 col-sm-6 col-xs-6 categoryListContainer">
+          <label for="year" style="display:none">Year: &nbsp;</label>
+          <select id="year" class="year form-control" name="year"  style="display:none">
           </select>
-          <div class="list-group categoryList">
+          <div class="clearfix"></div>
+
+          <button href="#" class="btn btn-primary resetLabel" style="display:none">
+            RESET
+          </button>
+
+          <span class="clearfix"></span>
+
+          <label class="pathLabel" style="display:none">
+            <span>HIV/AIDS Info</span>
+          </label>
+
+          <span class="clearfix"></span>
+
+          <div class="list-group categoryList" style="display:none">
           </div>
-          <div class="list-group subCategoryList">
+
+          <div class="list-group subCategoryList" style="display:none">
           </div>
+
+          <div class="list-group itemList" style="display:none">
+          </div>
+
         </div>
-        <div class="col-md-9 mapBorder">
+        <div class="col-md-9 col-sm-6 col-xs-6 mapBorder">
           <div class="centered loading">
             <img src="gears.svg"/>
+            <p>LOADING</p>
           </div>
-          <div class="emptyState">
-            <h4 class="centered">Select a <span style="color: red">HIV</span> statistic to show map data</h4>
+          <div class="emptyState" style="display:none">
+            <h4 class="centered">
+              Select an
+              <span
+                style="cursor: help; font-weight: bold;"
+                data-toggle="tooltip"
+                data-placement="bottom"
+                title="The human immunodeficiency virus (HIV) is a lentivirus that causes HIV infection and over time acquired immunodeficiency syndrome (AIDS)">
+                HIV</span>
+              statistic to show data</h4>
           </div>
-          <div class="mapContainer">
+          <div class="mapContainer" style="display:none">
             <svg width="900" height="550"></svg>
             <h5 class="centered not-centered-y mapLabel"></h5>
           </div>

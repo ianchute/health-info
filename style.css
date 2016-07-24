@@ -15,16 +15,19 @@ body {
 
 .loading {
   top: 270px;
-  background-color: brown;
+  background-color: rgba(221, 72, 20, 0.5);
   border-radius: 4px;
-  border: 4px black inset;
+  border: 1px inset rgba(221, 72, 20, 1);
+  padding: 4px;
 }
 
 .emptyState h4 {
   top: 270px;
-  background-color: white;
-  border: 4px black groove;
+  background-color: rgba(221, 72, 20, 0.5);
+  border: 1px rgba(221, 72, 20, 1) inset;
   border-radius: 4px;
+  color: white;
+  padding: 4px;
 }
 
 .not-centered-y {
@@ -34,18 +37,23 @@ body {
 }
 
 .container {
-  opacity: 0.95;
 }
 
 svg {
   background-color: white;
-  border-radius: 4px;
+  border-radius: 12px;
+  border: 2px inset white;
+  padding: 4px;
 }
 
 .list-group {
-  max-height: 500px;
-  overflow-y:scroll;
+  max-height: 350px;
+  overflow-y: auto;
   box-sizing: border-box;
+}
+
+.list-group-item {
+  cursor: pointer;
 }
 
 label {
@@ -54,7 +62,7 @@ label {
 }
 
 .year {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .active {
@@ -63,4 +71,81 @@ label {
 
 h5 {
   font-weight: bold;
+  background-color: rgba(221, 72, 20, 1) !important;
+  border: 1px rgba(221, 72, 20, 1) inset !important;
+  border-radius: 4px;
+  color: white;
+  padding: 4px;
+  pointer-events: none;
+}
+
+.pathLabel > span:not(:first-child):before {
+  content: " > ";
+  font-weight: lighter;
+}
+
+.pathLabel {
+  min-height: 45px;
+  background-color: rgba(221, 72, 20, 1);
+  width: 100%;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.resetLabel {
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.loading > p {
+  margin-left: 5%;
+  color: white;
+  font-weight: bold;
+}
+
+.loading > p:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4,end) 900ms infinite;
+  animation: ellipsis steps(4,end) 900ms infinite;
+  content: "\2026";
+  width: 0px;
+  color: white;
+  font-weight: bold;
+}
+
+@keyframes ellipsis {
+  to {
+    width: 20px;
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 20px;
+  }
+}
+
+.categoryListContainer {
+  background: teal;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 4px;
+  padding-top: 8px;
+  border-radius: 8px;
+  min-height: 550px;
+  border: 1px teal inset;
+}
+
+label.disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }

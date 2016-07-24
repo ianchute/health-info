@@ -3,5 +3,59 @@
   {
     "url": "https://data-e34d7.firebaseio.com/",
     "secret": "YKEvChevW9CxfBbv4vAsmZHacKoVM4ApC4t8xSgF"
+  },
+
+  "palette": ["#ffffd9", "#edf8b1", "#c7e9b4", "#7fcdbb", "#41b6c4", "#1d91c0", "#225ea8", "#253494", "#081d58"],
+
+  "mainCategoryMap": {
+    "SH": "Health",
+    "SE": "Education",
+    "NY": "National",
+    "SI": "Income",
+    "SL": "Labor",
+    "SM": "Migration",
+    "SN": "Nutrition",
+    "SP": "Population"
+  },
+
+  "subCategoryMap": {
+    "GNP": "Gross National Product",
+    "ADT": "Literacy",
+    "ENR": "School Attendance",
+    "PRM": "Primary School",
+    "SEC": "Secondary School",
+    "TER": "Tertiary School",
+    "XPD": "Health Expenditure",
+    "ANM": "Anemia",
+    "CON": "Condom Use",
+    "DTH": "Cause of Death",
+    "DYN": "General",
+    "FPL": "Family Planning",
+    "H2O": "Water Source",
+    "HIV": "HIV Prevalence and Education Statistics",
+    "IMM": "Immunization",
+    "MED": "Medical Care",
+    "MLR": "Malaria",
+    "MMR": "Maternity",
+    "PRG": "Pregnant Women",
+    "PRV": "Smoking",
+    "SGR": "Surgery",
+    "STA": "Health and Sanitation",
+    "SVR": "Severe Wasting",
+    "TBS": "Tuberculosis",
+    "VAC": "Vaccination",
+    "POV": "Poverty",
+    "EMP": "Employment",
+    "TLF": "Labor force",
+    "UEM": "Unemployment",
+    "POP": "Population",
+    "ITK": "Intake",
+    "ADO": "Adolescents",
+    "HOU": "Housing",
+    "MTR": "Teenage Mothers",
+    "REG": "Registration",
+    "RUR": "Rural",
+    "URB": "Urban",
+    "UWT": "No contraception"
   }
 }

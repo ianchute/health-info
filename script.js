@@ -1,20 +1,39 @@
 $(() => {
 
-  const $categoryList = $('.categoryList')
+  $('[data-toggle="tooltip"]').tooltip()
+
   const $categoryListContainer = $('.categoryListContainer')
+
+  const $categoryList = $('.categoryList')
+  const categoryListItems = []
+
+  const $subCategoryList = $('.subCategoryList')
+  const subCategoryListItems = []
+
+  const $itemList = $('.itemList')
+  const itemListItems = []
+
   const $mapContainer = $('.mapContainer').fadeOut()
   const $loading = $('.loading')
   const $yearSelect = $('#year')
   const $emptyState = $('.emptyState').fadeOut()
-  const categoryListItems = []
-  const countryCodes = countries.map(country => country['alpha-3'])
-  let categories
+  const $pathLabel = $('.pathLabel')
+  const $resetLabel = $('.resetLabel')
 
   const years = Array.apply(0, Array(57)).map((x, i) => `<option value="${2015 - i}">${2015 - i}</option>`)
   $yearSelect.html(years.join(''))
   $yearSelect.val('2014')
 
   $.ajax('config.json').then(config => {
+
+    const countryCodes = countries.map(country => country['alpha-3'])
+    const palette = config.palette
+    const mainCategoryMap = config.mainCategoryMap
+    const subCategoryMap = config.subCategoryMap
+    let categories
+    let items
+    let mainCategories
+    let subCategories
 
     const root = new Firebase(config.firebase.url)
 
@@ -24,74 +43,165 @@ $(() => {
       root.child('categories').once('value', snap => {
 
         categories = snap.val()
-        Object.keys(categories)
-          .sort((a, b) => categories[a].localeCompare(categories[b]))
-          .map(categoryKey => categoryListItems.push(`
-              <a href="#"
-                class="list-group-item categoryListItem"
-                data-id="${categoryKey}"
-              >${categories[categoryKey]}</a>
-            `))
+        items = Object.keys(categories)
+        mainCategories = [...groupBy(items, k => k.split('_')[0]).keys()]
+        subCategories = [...groupBy(items, k => k.split('_')[0] + '_' + k.split('_')[1]).keys()]
 
-        $loading.fadeOut(
-          () => $categoryList.empty().html(categoryListItems.join('')).parent().fadeIn(
-            () =>
-            {
-              $emptyState.fadeIn()
-              $('.categoryListItem').click(eList => {
-                if ($('.categoryListItem').hasClass('disabled')) return;
+        mainCategories
+          .sort((a, b) => mainCategoryMap[a].localeCompare(mainCategoryMap[b]))
+          .map(k => categoryListItems.push(`
+            <a href="#"
+              class="list-group-item categoryListItem"
+              data-id="${k}" data-kind="category"
+            >${mainCategoryMap[k]}</a>
+          `))
+        $categoryList.empty().html(categoryListItems.join(''))
 
-                $yearSelect.addClass('disabled')
-                $('.categoryListItem').addClass('disabled').removeClass('active')
-                $(eList.target).addClass('active')
-                $emptyState.fadeOut(() =>
-                  $mapContainer.fadeOut(() => $loading.fadeIn())
-                )
+        const handler = (eList => {
+          if ($('.list-group-item').hasClass('disabled') || $(eList.target).hasClass('active')) return;
 
-                const id = $(eList.target).data('id')
-                root.child('data').child(id).once('value', snap => {
-                  $('svg').empty()
-                  $loading.fadeOut(() => $mapContainer.fadeIn(() => {
-                    $yearSelect.removeClass('disabled')
-                    $('.categoryListItem').removeClass('disabled')
-                    const selectedData = snap.val()
-                    const mappedData =
-                      Object.keys(selectedData)
-                        .filter(country => countryCodes.indexOf(country) !== -1)
-                        .map(country =>
-                          Object.assign(
+          const $target = $(eList.target)
+          const kind = $target.data('kind')
+          const id = $target.data('id')
 
-                            Object.assign.apply(Object,
-                              Object.keys(selectedData[country])
-                              .map(k => ({[k]: selectedData[country][k].toString()}))
-                            ),
+          if (kind === 'category') {
 
-                            {
-                              'country': country
-                            }
-                          )
-                        )
+            $('.list-group-item').off()
+            subCategoryListItems.length = 0
+            subCategories
+              .filter(categoryKey => categoryKey.startsWith(id + '_'))
+              .map(categoryKey => subCategoryListItems.push(`
+                <a href="#"
+                  class="list-group-item subCategoryListItem"
+                  data-id="${categoryKey}" data-kind="subCategory"
+                >${subCategoryMap[categoryKey.split('_')[1]]}</a>
+              `))
+            $pathLabel.append(`<span>${$target.text()}</span>`)
+            $categoryList.fadeOut(() => {
+              $subCategoryList.empty().html(subCategoryListItems.join(''))
+              $('.list-group-item').click(handler)
+              $subCategoryList.fadeIn()
+            })
 
-                    const yearSelected = $yearSelect.val()
-                    const worldMap = d3.geomap.choropleth()
-                      .geofile('topojson/world/countries.json')
-                      .colors(['#ffeda0', '#feb24c', '#f03b20'])
-                      .column(yearSelected)
-                      .legend(true)
-                      .unitId('country')
+          } else if (kind === 'subCategory') {
 
-                      $('.mapLabel').text($(eList.target).text() + ` (${yearSelected})` )
+            $('.list-group-item').off()
+            itemListItems.length = 0
+            items
+              .filter(categoryKey => categoryKey.startsWith(id + '_'))
+              .map(categoryKey => itemListItems.push(`
+                <a href="#"
+                  class="list-group-item itemListItem"
+                  data-id="${categoryKey}" data-kind="item"
+                >${categories[categoryKey]}</a>
+              `))
+            $pathLabel.append(`<span>${$target.text()}</span>`)
+            $subCategoryList.fadeOut(() => {
+              $itemList.empty().html(itemListItems.join(''))
+              $('.list-group-item').click(handler)
+              $itemList.fadeIn()
+            })
 
-                    d3.select('svg').datum(mappedData).call(worldMap.draw, worldMap)
-                  }))
-                })
-              })
-            }
+          } else if (kind === 'item') {
+            itemHandler($(eList.target))
+          }
+        })
 
-          )
-        )
+        const itemHandler = (target => {
 
-      })
+          target = typeof target === 'undefined' ? $('a.active') : target
+          if (!target.length) return
+          $('.list-group-item').off()
+          $('a').attr('disabled', true).addClass('disabled').removeClass('active')
+          $(target).addClass('active')
+
+          $emptyState.fadeOut(() => {
+            $mapContainer.fadeOut(() => {
+              $yearSelect.attr('disabled', true).addClass('disabled')
+              $resetLabel.attr('disabled', true).addClass('disabled')
+              $pathLabel.attr('disabled', true).addClass('disabled')
+              $loading.fadeIn()
+              $('.list-group-item').click(handler)
+              root.child('data').child($('a.active').data('id')).once('value', snap => {
+
+                $('svg').empty()
+                $loading.fadeOut(() => $mapContainer.fadeIn(() => {
+                  $yearSelect.removeAttr('disabled').removeClass('disabled')
+                  $resetLabel.removeAttr('disabled').removeClass('disabled')
+                  $pathLabel.removeAttr('disabled').removeClass('disabled')
+                  $('a').removeAttr('disabled').removeClass('disabled')
+                  const selectedData = snap.val()
+                  const mappedData =
+                    Object.keys(selectedData)
+                    .filter(country => countryCodes.indexOf(country) !== -1)
+                    .map(country =>
+                      Object.assign(
+
+                        Object.assign.apply(Object,
+                          Object.keys(selectedData[country])
+                          .map(k => ({
+                            [k]: (selectedData[country][k]).toFixed(0)
+                          }))
+                        ),
+
+                        {
+                          'country': country
+                        }
+                      )
+                    )
+
+                  const yearSelected = $yearSelect.val()
+                  const worldMap = d3.geomap.choropleth()
+                    .geofile('topojson/world/countries.json')
+                    .colors(palette)
+                    .column(yearSelected)
+                    .legend(true)
+                    .unitId('country')
+
+                  $('.mapLabel').text($('a.active').text() + ` (${yearSelected})`)
+
+                  d3.select('svg').datum(mappedData).call(worldMap.draw, worldMap)
+
+                  setTimeout(() => $('.legend-bg').attr('rx', '4'), 500)
+
+
+
+                }))
+
+              }, (e => {
+                alert('An error has occurred. The page will now refresh')
+                location.reload()
+              }))
+            })
+          })
+        })
+
+        const reset = (() => {
+          $('a').removeClass('active')
+          $mapContainer.fadeOut()
+          $('.list-group').fadeOut(() => {
+            $loading.fadeOut(
+              () => $categoryList.parent().fadeIn(
+                () => {
+                  $yearSelect.prev().fadeIn()
+                  $yearSelect.fadeIn()
+                  $pathLabel.empty().html('<span>HIV/AIDS Info</span>').fadeIn()
+                  $resetLabel.fadeIn().off().click(reset)
+                  $categoryList.fadeIn()
+                  $emptyState.fadeIn()
+                  $('.list-group-item').off().click(handler)
+                  $yearSelect.off().change(() => itemHandler())
+                }
+              )
+            )
+          })
+        })
+
+        reset()
+      }, (e => {
+        alert('An error has occurred. The page will now refresh')
+        location.reload()
+      }))
 
     })
   })
