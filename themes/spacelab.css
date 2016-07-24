@@ -1,0 +1,9 @@
+:root {
+  --main-color: #446e9b;
+  --main-color-transparent: #446e9b;
+  --main-color-text: white;
+}
+
+body {
+  background-image: url("space.jpg");
+}

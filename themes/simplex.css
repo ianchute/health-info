@@ -1,0 +1,13 @@
+:root {
+  --main-color: #e72510;
+  --main-color-transparent: #e72510;
+  --main-color-text: white;
+}
+
+body {
+  background: url("simplex.jpg");
+}
+
+.navbar-right > .input-group {
+  margin-bottom: 6px !important;
+}

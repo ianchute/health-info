@@ -1,0 +1,9 @@
+:root {
+  --main-color: black;
+  --main-color-transparent: gray;
+  --main-color-text: white;
+}
+
+body {
+  background-image: url("slate.jpg");
+}

@@ -4,11 +4,10 @@
   <head>
     <meta charset="utf-8">
     <title>HIV/AIDS Info</title>
+    <script src="styleloader.js" charset="utf-8"></script>
 
     <link rel="icon" href="https://cdn3.iconfinder.com/data/icons/medical-7-1/512/ribbon_hiv_award_orange_blue-512.png" media="screen" title="no title" charset="utf-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/united/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="d3.geomap.css" media="screen" title="no title" charset="utf-8">
-    <link rel="stylesheet" href="style.css" media="screen" title="no title" charset="utf-8">
 
     <script src="https://cdn.firebase.com/js/client/2.2.7/firebase.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" charset="utf-8"></script>
@@ -20,11 +19,31 @@
     <script src="script.js" charset="utf-8"></script>
   </head>
 
-  <body>
+  <body style="display:none">
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand">HIV/AIDS Info</a>
+          <a class="navbar-brand">Health Info</a>
+        </div>
+        <div class="navbar-right">
+          <div class="input-group">
+            <span class="input-group-addon">Theme</span>
+            <select id="theme" class="theme selectpicker form-control" name="theme" data-live-search="true">
+              <option value="lumen">Simple</option>
+              <option value="spacelab">Helix</option>
+              <option value="united">Citrus</option>
+              <option value="simplex">Blood</option>
+              <option value="slate">Electro</option>
+            </select>
+            <script type="text/javascript">
+              $(() => {
+                $('#theme').val(localStorage.getItem('theme') || 'simple').off().change(e => {
+                  localStorage.setItem('theme', $(e.target).val())
+                  location.reload()
+                })
+              })
+            </script>
+          </div>
         </div>
       </div>
     </nav>
@@ -34,52 +53,97 @@
 
       <div class="row">
         <div class="col-md-3 col-sm-6 col-xs-6 categoryListContainer">
-          <label for="year" style="display:none">Year: &nbsp;</label>
-          <select id="year" class="year form-control" name="year"  style="display:none">
-          </select>
-          <div class="clearfix"></div>
 
-          <button href="#" class="btn btn-primary resetLabel" style="display:none">
-            RESET
-          </button>
+          <div class="panel-group">
 
-          <span class="clearfix"></span>
+            <div class="panel panel-primary panel-maps">
+              <div class="panel-heading">MAPS</div>
+              <div class="panel-body">
+                <div class="input-group">
+                  <span class="input-group-addon" style="display:none" >Year</span>
+                  <select id="year" style="display:none" class="year selectpicker form-control" name="year" data-live-search="true">
 
-          <label class="pathLabel" style="display:none">
-            <span>HIV/AIDS Info</span>
-          </label>
+                  </select>
+                </div>
+                <div class="clearfix"></div>
 
-          <span class="clearfix"></span>
+                <button href="#" class="btn btn-primary resetLabel" style="display:none">
+                  RESET
+                </button>
 
-          <div class="list-group categoryList" style="display:none">
+                <span class="clearfix"></span>
+
+                <label class="pathLabel" style="display:none">
+                  <span>Health</span>
+                </label>
+
+                <span class="clearfix"></span>
+
+                <div class="list-group categoryList" style="display:none">
+                </div>
+
+                <div class="list-group subCategoryList" style="display:none">
+                </div>
+
+                <div class="list-group itemList" style="display:none">
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-primary panel-tables">
+              <div class="panel-heading">
+                TABLES
+              </div>
+              <div class="panel-body">
+                <div class="input-group">
+                  <span class="input-group-addon" style="display:none">Country 1</span>
+                  <select id="country" style="display:none" class="country selectpicker form-control" name="country" data-live-search="true">
+                  </select>
+                </div>
+                <div class="input-group">
+                  <span class="input-group-addon" style="display:none">Country 2</span>
+                  <select id="country2" style="display:none" class="country selectpicker form-control" name="country" data-live-search="true">
+                  </select>
+                </div>
+                <button type="button" name="button" class="btn btn-primary">Select/Compare</button>
+              </div>
+            </div>
+
           </div>
 
-          <div class="list-group subCategoryList" style="display:none">
-          </div>
 
-          <div class="list-group itemList" style="display:none">
-          </div>
 
         </div>
         <div class="col-md-9 col-sm-6 col-xs-6 mapBorder">
           <div class="centered loading">
-            <img src="gears.svg"/>
+            <img src="gears.svg" />
             <p>LOADING</p>
           </div>
           <div class="emptyState" style="display:none">
             <h4 class="centered">
-              Select an
+              Select a
               <span
                 style="cursor: help; font-weight: bold;"
                 data-toggle="tooltip"
                 data-placement="bottom"
-                title="The human immunodeficiency virus (HIV) is a lentivirus that causes HIV infection and over time acquired immunodeficiency syndrome (AIDS)">
-                HIV</span>
+                title="Health is the level of functional or metabolic efficiency of a living organism.">
+                health</span>
               statistic to show data</h4>
           </div>
           <div class="mapContainer" style="display:none">
-            <svg width="900" height="550"></svg>
+            <svg width="900" height="595"></svg>
             <h5 class="centered not-centered-y mapLabel"></h5>
+          </div>
+          <div class="tableContainer" style="display:none">
+            <table>
+              <thead>
+
+              </thead>
+              <tbody>
+
+              </tbody>
+              <h5 class="centered not-centered-y mapLabel"></h5>
+            </table>
           </div>
         </div>
       </div>

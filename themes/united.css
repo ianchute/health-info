@@ -1,0 +1,13 @@
+:root {
+  --main-color: rgba(221, 72, 20, 1);
+  --main-color-transparent: rgba(221, 72, 20, 0.5);
+  --main-color-text: white;
+}
+
+body {
+  background-image: url("united.jpg");
+}
+
+.navbar-right > .input-group > span {
+  background-color: orange;
+}

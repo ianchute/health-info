@@ -1,0 +1,9 @@
+:root {
+  --main-color: #158cba;
+  --main-color-transparent: #158cba;
+  --main-color-text: white;
+}
+
+body {
+  background-color: skyblue;
+}

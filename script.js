@@ -15,7 +15,8 @@ $(() => {
 
   const $mapContainer = $('.mapContainer').fadeOut()
   const $loading = $('.loading')
-  const $yearSelect = $('#year')
+  const $yearSelect = $('.year')
+  const $countrySelect = $('.country')
   const $emptyState = $('.emptyState').fadeOut()
   const $pathLabel = $('.pathLabel')
   const $resetLabel = $('.resetLabel')
@@ -26,7 +27,22 @@ $(() => {
 
   $.ajax('config.json').then(config => {
 
+    $('body').fadeIn()
+
     const countryCodes = countries.map(country => country['alpha-3'])
+    const countryNames = Object.assign.apply(Object, countries.filter(country => country['alpha-3'] !== 'UMI').map(
+      country => (
+        {
+          [country['alpha-3']] :
+            (country['name'])
+              .replace(/\(.*\)/g, '')
+              .replace(/\sand.*/g, '')
+              .replace(/\,.*/g, '')
+              .replace(/of\s.*/g, '')
+        }
+      )
+    ))
+    console.log(countryNames)
     const palette = config.palette
     const mainCategoryMap = config.mainCategoryMap
     const subCategoryMap = config.subCategoryMap
@@ -39,6 +55,10 @@ $(() => {
 
     root.authWithCustomToken(config.firebase.secret, (error, authData) => {
       if (error) alert('Unable to authenticate!')
+
+      $countrySelect.html(
+        Object.keys(countryNames).map(key => `<option value="${key}">${countryNames[key]}</option>`).join('')
+      )
 
       root.child('categories').once('value', snap => {
 
@@ -163,9 +183,6 @@ $(() => {
                   d3.select('svg').datum(mappedData).call(worldMap.draw, worldMap)
 
                   setTimeout(() => $('.legend-bg').attr('rx', '4'), 500)
-
-
-
                 }))
 
               }, (e => {
@@ -185,10 +202,14 @@ $(() => {
                 () => {
                   $yearSelect.prev().fadeIn()
                   $yearSelect.fadeIn()
-                  $pathLabel.empty().html('<span>HIV/AIDS Info</span>').fadeIn()
+                  $countrySelect.prev().fadeIn()
+                  $countrySelect.fadeIn()
+                  $pathLabel.empty().html('<span>Health Info</span>').fadeIn()
                   $resetLabel.fadeIn().off().click(reset)
                   $categoryList.fadeIn()
                   $emptyState.fadeIn()
+                  $($countrySelect[0]).val('USA')
+                  $($countrySelect[1]).val('PHL')
                   $('.list-group-item').off().click(handler)
                   $yearSelect.off().change(() => itemHandler())
                 }
