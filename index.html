@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
     <title>World Health Info</title>
     <script src="styleloader.js" charset="utf-8"></script>
 
@@ -25,8 +28,8 @@
         <div class="navbar-header">
           <a class="navbar-brand">Health Info</a>
         </div>
-        <div class="navbar-right">
-          <div class="input-group">
+        <div class="navbar-right visible-md visible-lg">
+          <div class="input-group" data-toggle="tooltip" data-placement="left" title="Enhance your user experience by changing to a theme of your choice.">
             <span class="input-group-addon">Theme</span>
             <select id="theme" class="theme selectpicker form-control" name="theme" data-live-search="true">
               <option value="lumen">Simple</option>
@@ -36,17 +39,18 @@
               <option value="slate">Electro</option>
             </select>
             <script type="text/javascript">
-              $(() => {
-                $('#theme').val(localStorage.getItem('theme') || 'lumen').off().change(e => {
-                  localStorage.setItem('theme', $(e.target).val())
-                  location.reload()
-                })
+            $(() => {
+              $('#theme').val(localStorage.getItem('theme') || 'lumen').off().change(e => {
+                localStorage.setItem('theme', $(e.target).val())
+                location.reload()
               })
+            })
             </script>
           </div>
         </div>
       </div>
     </nav>
+
 
 
     <div class="container">
@@ -60,11 +64,12 @@
               <div class="panel-heading">MAPS</div>
               <div class="panel-body">
                 <div class="input-group">
-                  <span class="input-group-addon" style="display:none" >Year</span>
+                  <span class="input-group-addon" style="display:none">Year</span>
                   <select id="year" style="display:none" class="year selectpicker form-control" name="year" data-live-search="true">
 
                   </select>
                 </div>
+
                 <div class="clearfix"></div>
 
                 <button href="#" class="btn btn-primary resetLabel" style="display:none">
@@ -79,14 +84,17 @@
 
                 <span class="clearfix"></span>
 
-                <div class="list-group categoryList" style="display:none">
+                <div >
+                  <div class="list-group categoryList" style="display:none" data-toggle="tooltip" data-placement="right" title="Choose a category on the list.">
+                  </div>
+
+                  <div class="list-group subCategoryList" style="display:none" data-toggle="tooltip" data-placement="right" title="Choose a subcategory on the list.">
+                  </div>
+
+                  <div class="list-group itemList" style="display:none" data-toggle="tooltip" data-placement="right" title="Choose a statistic on the list to render it on a choropleth map.">
+                  </div>
                 </div>
 
-                <div class="list-group subCategoryList" style="display:none">
-                </div>
-
-                <div class="list-group itemList" style="display:none">
-                </div>
               </div>
             </div>
 
@@ -105,7 +113,7 @@
                   <select id="country2" style="display:none" class="country selectpicker form-control" name="country" data-live-search="true">
                   </select>
                 </div>
-                <button type="button" name="button" class="btn btn-primary">Select/Compare</button>
+                <button type="button" name="button" class="btn btn-primary" id="select" style="display:none" data-toggle="tooltip" data-placement="top" title="Select two of the same countries to display the countries through the years. When comparing two countries, the year in the Maps Panel is used.">Select/Compare</button>
               </div>
             </div>
 
@@ -115,7 +123,7 @@
 
         </div>
         <div class="col-md-9 col-sm-6 col-xs-6 mapBorder">
-          <div class="centered loading">
+          <div class="centered loading" data-toggle="tooltip" data-placement="top" title="Still loading... Please wait!">
             <img src="gears.svg" />
             <p>LOADING</p>
           </div>
@@ -131,7 +139,9 @@
               statistic to show data</h4>
           </div>
           <div class="mapContainer" style="display:none">
-            <svg width="900" height="595"></svg>
+            <svg width="900" height="595"
+              data-toggle="tooltip" data-placement="left" title="Click on the map to zoom in."
+            ></svg>
             <h5 class="centered not-centered-y mapLabel"></h5>
           </div>
           <div class="tableContainer" style="display:none">

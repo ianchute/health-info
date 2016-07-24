@@ -21,6 +21,7 @@ $(document).ready(() => {
   const $emptyState = $('.emptyState').fadeOut()
   const $pathLabel = $('.pathLabel')
   const $resetLabel = $('.resetLabel')
+  const $select = $('#select')
 
   const years = Array.apply(0, Array(57)).map((x, i) => `<option value="${2015 - i}">${2015 - i}</option>`)
   $yearSelect.html(years.join(''))
@@ -128,6 +129,8 @@ $(document).ready(() => {
 
         const itemHandler = (target => {
 
+          $('[data-toggle="tooltip"]').tooltip('hide')
+
           target = typeof target === 'undefined' ? $('a.active') : target
           if (!target.length) return
           $('.list-group-item').off()
@@ -210,6 +213,7 @@ $(document).ready(() => {
                   $emptyState.fadeIn()
                   $($countrySelect[0]).val('USA')
                   $($countrySelect[1]).val('PHL')
+                  $select.fadeIn()
                   $('.list-group-item').off().click(handler)
                   $yearSelect.off().change(() => itemHandler())
                 }
