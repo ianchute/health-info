@@ -1,6 +1,10 @@
 $(document).ready(() => {
 
-  $('[data-toggle="tooltip"]').tooltip()
+  'use strict'
+
+  $('[data-toggle="tooltip"]').tooltip({
+    container: 'body'
+  })
   $('body').fadeIn()
 
   const $categoryListContainer = $('.categoryListContainer')
@@ -15,6 +19,7 @@ $(document).ready(() => {
   const itemListItems = []
 
   const $mapContainer = $('.mapContainer').fadeOut()
+  const $tableContainer = $('.tableContainer').fadeOut()
   const $loading = $('.loading')
   const $yearSelect = $('.year')
   const $countrySelect = $('.country')
@@ -31,18 +36,15 @@ $(document).ready(() => {
 
     const countryCodes = countries.map(country => country['alpha-3'])
     const countryNames = Object.assign.apply(Object, countries.filter(country => country['alpha-3'] !== 'UMI').map(
-      country => (
-        {
-          [country['alpha-3']] :
-            (country['name'])
-              .replace(/\(.*\)/g, '')
-              .replace(/\sand.*/g, '')
-              .replace(/\,.*/g, '')
-              .replace(/of\s.*/g, '')
-        }
-      )
+      country => ({
+        [country['alpha-3']]:
+          (country['name'])
+          .replace(/\(.*\)/g, '')
+          .replace(/\sand.*/g, '')
+          .replace(/\,.*/g, '')
+          .replace(/of\s.*/g, '')
+      })
     ))
-    console.log(countryNames)
     const palette = config.palette
     const mainCategoryMap = config.mainCategoryMap
     const subCategoryMap = config.subCategoryMap
@@ -147,6 +149,7 @@ $(document).ready(() => {
               root.child('data').child($('a.active').data('id')).once('value', snap => {
 
                 $('svg').empty()
+                $('table').empty()
                 $loading.fadeOut(() => $mapContainer.fadeIn(() => {
                   $yearSelect.removeAttr('disabled').removeClass('disabled')
                   $resetLabel.removeAttr('disabled').removeClass('disabled')
@@ -195,6 +198,62 @@ $(document).ready(() => {
           })
         })
 
+        const select = (() => {
+
+          $('[data-toggle="tooltip"]').tooltip('hide')
+
+          $emptyState.fadeOut(() => {
+            $mapContainer.fadeOut(() => {
+              $select.attr('disabled', true).addClass('disabled')
+              $countrySelect.attr('disabled', true).addClass('disabled')
+              $loading.fadeIn()
+
+              const country1 = $($countrySelect[0]).val()
+              const country2 = $($countrySelect[1]).val()
+
+              const country1Promises =
+                Object.keys(categories).map(categoryKey => root.child('data').child(categoryKey).child(country1).child($yearSelect.val()).once('value'))
+              const country2Promises =
+                Object.keys(categories).map(categoryKey => root.child('data').child(categoryKey).child(country2).child($yearSelect.val()).once('value'))
+
+              Promise.all(country2Promises.concat(country1Promises)).then(function () {
+
+                const args = ([...arguments][0])
+
+                const tableData = args
+                .sort((snapA, snapB) => {
+                  const areEqual = snapA.ref().toString().split('/').splice(-3)[0] === snapB.ref().toString().split('/').splice(-3)[0]
+                  const differentiator = snapB.ref().toString().split('/').splice(-2)[0].trim() === country1 ? 'A' : 'Z'
+                  const comparison = (snapA.ref().toString().split('/').splice(-3)[0].padRight(40, '_') + (areEqual ? differentiator : '')).trim()
+                    .localeCompare((snapB.ref().toString().split('/').splice(-3)[0].padRight(40, '_') + (areEqual ? differentiator: '')).trim())
+                  return comparison
+                })
+                .map(snap => {
+                  const country = snap.ref().toString().split('/').splice(-2)[0]
+                  const statistic = categories[snap.ref().toString().split('/').splice(-3)[0]]
+                  const value = snap.val()
+
+                  if (country === country1)
+                    return `<tr><td>${statistic}</td><td>${value.toLocaleString()}</td>`
+                  else if (country === country2)
+                    return `<td>${value.toLocaleString()}</td></tr>`
+                }).join('')
+
+                console.log(tableData)
+
+                $('svg').empty()
+                $('table').empty().html('<thead></thead><tbody></tbody>')
+                $('table > thead').html(`<tr><td>Statistic</td><td>${countryNames[country1]}</td><td>${countryNames[country2]}</td></tr>`)
+                $('table > tbody').html(tableData)
+                $loading.fadeOut(() => $tableContainer.fadeIn(() => {
+                  $select.removeAttr('disabled').removeClass('disabled')
+                  $countrySelect.removeAttr('disabled').removeClass('disabled')
+                }))
+              })
+            })
+          })
+        })
+
         const reset = (() => {
 
           $('a').removeClass('active')
@@ -216,6 +275,7 @@ $(document).ready(() => {
                   $select.fadeIn()
                   $('.list-group-item').off().click(handler)
                   $yearSelect.off().change(() => itemHandler())
+                  $select.off().click(() => select())
                 }
               )
             )

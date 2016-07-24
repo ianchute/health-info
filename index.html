@@ -12,7 +12,7 @@
     <link rel="icon" href="favicon.ico" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="d3.geomap.css" media="screen" title="no title" charset="utf-8">
 
-    <script src="https://cdn.firebase.com/js/client/2.2.7/firebase.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" charset="utf-8"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" charset="utf-8"></script>
     <script src="d3.geomap.dependencies.min.js" charset="utf-8"></script>
@@ -40,9 +40,11 @@
             </select>
             <script type="text/javascript">
             $(() => {
-              $('#theme').val(localStorage.getItem('theme') || 'lumen').off().change(e => {
-                localStorage.setItem('theme', $(e.target).val())
-                location.reload()
+              $('#theme').val(localStorage.getItem('theme') || 'spacelab').off().change(e => {
+                $('body').fadeOut(() => {
+                  localStorage.setItem('theme', $(e.target).val())
+                  location.reload()
+                })
               })
             })
             </script>
@@ -98,7 +100,11 @@
               </div>
             </div>
 
-            <div class="panel panel-primary panel-tables">
+            <div class="panel panel-primary panel-tables"
+              data-toggle="tooltip"
+              data-placement="right"
+              title="Select two of the same countries to display the countries through the years. When comparing two countries, the year in the Maps Panel is used."
+            >
               <div class="panel-heading">
                 TABLES
               </div>
@@ -113,13 +119,12 @@
                   <select id="country2" style="display:none" class="country selectpicker form-control" name="country" data-live-search="true">
                   </select>
                 </div>
-                <button type="button" name="button" class="btn btn-primary" id="select" style="display:none" data-toggle="tooltip" data-placement="top" title="Select two of the same countries to display the countries through the years. When comparing two countries, the year in the Maps Panel is used.">Select/Compare</button>
+                <button type="button" name="button" class="btn btn-primary" id="select" style="display:none"
+                >Select/Compare</button>
               </div>
             </div>
 
           </div>
-
-
 
         </div>
         <div class="col-md-9 col-sm-6 col-xs-6 mapBorder">
@@ -138,22 +143,14 @@
                 health</span>
               statistic to show data</h4>
           </div>
-          <div class="mapContainer" style="display:none">
+          <div class="mapContainer" style="display:none;">
             <svg width="900" height="595"
-              data-toggle="tooltip" data-placement="left" title="Click on the map to zoom in."
+              data-toggle="tooltip" data-placement="left" title="Click on a country to zoom in. Click again to zoom out."
             ></svg>
             <h5 class="centered not-centered-y mapLabel"></h5>
           </div>
-          <div class="tableContainer" style="display:none">
-            <table>
-              <thead>
-
-              </thead>
-              <tbody>
-
-              </tbody>
-              <h5 class="centered not-centered-y mapLabel"></h5>
-            </table>
+          <div class="tableContainer table-responsive" height="595" style="display:none; overflow: none; height: 595px;">
+            <table class="table table-condensed table-hover table-striped table-bordered"></table>
           </div>
         </div>
       </div>

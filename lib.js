@@ -24,3 +24,12 @@ function sharedStart(array) {
   while (i < L && a1.charAt(i) === a2.charAt(i)) i++
     return a1.substring(0, i)
 }
+
+if (!String.prototype.padRight) {
+  String.prototype.padRight = function (length, str) {
+    str = str || ' ';
+    return this.length >= length ?
+      this :
+      this + (new Array(Math.ceil((length - this.length) / str.length) + 1).join(str)).substr(0, (length - this.length));
+  };
+}

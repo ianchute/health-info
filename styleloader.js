@@ -1,6 +1,6 @@
 (() => {
 
-  const theme = localStorage.getItem('theme') || 'lumen'
+  const theme = localStorage.getItem('theme') || 'spacelab'
   const head = document.head
 
   const cdn = document.createElement('link')

@@ -10,7 +10,7 @@
   "author": "Ian Chu Te",
   "license": "MIT",
   "dependencies": {
-    "firebase": "^2.2.7",
+    "firebase": "^2.4.2",
     "http-server": "^0.9.0"
   },
   "devDependencies": {}
