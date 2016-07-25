@@ -7,3 +7,7 @@
 body {
   background-image: url("slate.jpg");
 }
+
+thead {
+  color: white;
+}

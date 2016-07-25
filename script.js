@@ -140,6 +140,7 @@ $(document).ready(() => {
           $(target).addClass('active')
 
           $emptyState.fadeOut(() => {
+            $tableContainer.fadeOut()
             $mapContainer.fadeOut(() => {
               $yearSelect.attr('disabled', true).addClass('disabled')
               $resetLabel.attr('disabled', true).addClass('disabled')
@@ -203,7 +204,8 @@ $(document).ready(() => {
           $('[data-toggle="tooltip"]').tooltip('hide')
 
           $emptyState.fadeOut(() => {
-            $mapContainer.fadeOut(() => {
+            $mapContainer.fadeOut()
+            $tableContainer.fadeOut(() => {
               $select.attr('disabled', true).addClass('disabled')
               $countrySelect.attr('disabled', true).addClass('disabled')
               $loading.fadeIn()
@@ -231,13 +233,16 @@ $(document).ready(() => {
                 const tableData = Object.keys(tableObject)
                 .sort((a, b) => categories[a].localeCompare(categories[b]))
                 .map(statistic => {
-                  const country = snap.ref().toString().split('/').splice(-2)[0]
-                  return `<tr>
+                  const difference = tableObject[statistic][country1] == tableObject[statistic][country2]
+                    ? 'yellow' : (tableObject[statistic][country1] > tableObject[statistic][country2]) ? 'green' : 'red'
+                  return `<tr class=${difference}>
                     <td>${categories[statistic]}</td>
                     <td>${tableObject[statistic][country1].toLocaleString()}</td>
                     <td>${tableObject[statistic][country2].toLocaleString()}</td>
                   </tr>`
                 }).join('')
+
+
 
                 $('svg').empty()
                 $('table').empty().html('<thead></thead><tbody></tbody>')
@@ -256,6 +261,7 @@ $(document).ready(() => {
 
           $('a').removeClass('active')
           $mapContainer.fadeOut()
+          $tableContainer.fadeOut()
           $('.list-group').fadeOut(() => {
             $loading.fadeOut(
               () => $categoryList.parent().fadeIn(

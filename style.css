@@ -251,11 +251,35 @@ tbody {
 }
 
 tr:hover {
-  font-weight: bold;
   cursor: default;
 }
 
-tr:hover > td {
-  background-color: var(--main-color);
-  color: var(--main-color-text);
+tr.green:hover > td {
+  background-color: lightgreen;
+  filter: brightness(110%);
+  -webkit-filter: brightness(110%);
+}
+
+.green {
+  background-color: lightgreen;
+}
+
+tr.red:hover > td {
+  background-color: pink;
+  filter: brightness(110%);
+  -webkit-filter: brightness(110%);
+}
+
+.red {
+  background-color: pink;
+}
+
+tr.yellow:hover > td {
+  background-color: lightyellow;
+  filter: brightness(110%);
+  -webkit-filter: brightness(110%);
+}
+
+.yellow {
+  background-color: lightyellow;
 }
