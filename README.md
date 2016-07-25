@@ -10,7 +10,8 @@ Techs used:
 - jQuery
 - CSS3
 
-Firebase requires a browser with WebSocket support
+Firebase requires a browser with WebSocket support.
+
 Also, the website requires HTML5, ES6 and CSS3 support.
 
 How to run:
