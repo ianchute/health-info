@@ -43,7 +43,8 @@
               $('#theme').val(localStorage.getItem('theme') || 'spacelab').off().change(e => {
                 $('body').fadeOut(() => {
                   localStorage.setItem('theme', $(e.target).val())
-                  location.reload()
+                  window.loadStyles()
+                  setTimeout(() => $('body').fadeIn(), 200)
                 })
               })
             })
