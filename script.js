@@ -247,6 +247,14 @@ $(document).ready(() => {
                     <td>${categories[statistic]}</td>
                     <td>${tableObject[statistic][country1].toLocaleString()}</td>
                     <td>${tableObject[statistic][country2].toLocaleString()}</td>
+                    <td>${(tableObject[statistic][country1] - tableObject[statistic][country2]).toLocaleString()}</td>
+                    <td class="percentage">
+                      ${
+                        tableObject[statistic][country1] ?
+                        (((tableObject[statistic][country1] - tableObject[statistic][country2]) / tableObject[statistic][country1]) * 100).toFixed(2) + '%'
+                        : '-'
+                      }
+                    </td>
                   </tr>`
                   }).join('')
 
@@ -258,6 +266,8 @@ $(document).ready(() => {
                   <td>Statistic</td>
                   <td>${countryNames[country1]} (${$yearSelect.val()})</td>
                   <td>${countryNames[country2]} (${$yearSelect.val()})</td>
+                  <td>Diff.</td>
+                  <td>% Diff.</td>
                 </tr>`)
                 $('table > tbody').html(tableData)
                 $loading.fadeOut(() => $tableContainer.fadeIn(() => {
