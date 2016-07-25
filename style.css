@@ -254,3 +254,8 @@ tr:hover {
   font-weight: bold;
   cursor: default;
 }
+
+tr:hover > td {
+  background-color: var(--main-color);
+  color: var(--main-color-text);
+}

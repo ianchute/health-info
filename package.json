@@ -1,11 +1,10 @@
 {
-  "name": "HIV-Information-Chloropleth-Map",
+  "name": "Health-Info-Website",
   "version": "1.0.0",
-  "description": "HIV-Information-Chloropleth-Map",
-  "main": "index.js",
+  "description": "Health-Info-Website",
+  "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node_modules/http-server/bin/http-server -o"
+    "start": "echo 'NOTE: Please use a browser with HTML5, ES6 and CSS3 support.'; node_modules/http-server/bin/http-server -o"
   },
   "author": "Ian Chu Te",
   "license": "MIT",

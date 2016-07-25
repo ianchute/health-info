@@ -220,26 +220,24 @@ $(document).ready(() => {
 
                 const args = ([...arguments][0])
 
-                const tableData = args
-                .sort((snapA, snapB) => {
-                  const areEqual = snapA.ref().toString().split('/').splice(-3)[0] === snapB.ref().toString().split('/').splice(-3)[0]
-                  const differentiator = snapB.ref().toString().split('/').splice(-2)[0].trim() === country1 ? 'A' : 'Z'
-                  const comparison = (snapA.ref().toString().split('/').splice(-3)[0].padRight(40, '_') + (areEqual ? differentiator : '')).trim()
-                    .localeCompare((snapB.ref().toString().split('/').splice(-3)[0].padRight(40, '_') + (areEqual ? differentiator: '')).trim())
-                  return comparison
-                })
-                .map(snap => {
+                const tableObject = $.extend(true,
+                  ...(args.map(snap => ({
+                    [snap.ref().toString().split('/').splice(-3)[0]] : {
+                      [snap.ref().toString().split('/').splice(-2)[0]] : snap.val()
+                    }
+                  })))
+                )
+
+                const tableData = Object.keys(tableObject)
+                .sort((a, b) => categories[a].localeCompare(categories[b]))
+                .map(statistic => {
                   const country = snap.ref().toString().split('/').splice(-2)[0]
-                  const statistic = categories[snap.ref().toString().split('/').splice(-3)[0]]
-                  const value = snap.val()
-
-                  if (country === country1)
-                    return `<tr><td>${statistic}</td><td>${value.toLocaleString()}</td>`
-                  else if (country === country2)
-                    return `<td>${value.toLocaleString()}</td></tr>`
+                  return `<tr>
+                    <td>${categories[statistic]}</td>
+                    <td>${tableObject[statistic][country1].toLocaleString()}</td>
+                    <td>${tableObject[statistic][country2].toLocaleString()}</td>
+                  </tr>`
                 }).join('')
-
-                console.log(tableData)
 
                 $('svg').empty()
                 $('table').empty().html('<thead></thead><tbody></tbody>')
