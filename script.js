@@ -2,10 +2,16 @@ $(document).ready(() => {
 
   'use strict'
 
-  $('[data-toggle="tooltip"]').tooltip({
-    container: 'body'
-  })
-  $('body').fadeIn()
+
+
+  setTimeout(() => {
+      $('body').fadeIn(() =>
+        $('[data-toggle="tooltip"]').tooltip({
+          container: 'body'
+        })
+      )
+    },
+    200)
 
   const $categoryListContainer = $('.categoryListContainer')
 
@@ -27,6 +33,7 @@ $(document).ready(() => {
   const $pathLabel = $('.pathLabel')
   const $resetLabel = $('.resetLabel')
   const $select = $('#select')
+  // const $showChart = $('#showChart')
 
   const years = Array.apply(0, Array(57)).map((x, i) => `<option value="${2015 - i}">${2015 - i}</option>`)
   $yearSelect.html(years.join(''))
@@ -207,6 +214,7 @@ $(document).ready(() => {
             $mapContainer.fadeOut()
             $tableContainer.fadeOut(() => {
               $select.attr('disabled', true).addClass('disabled')
+              // $showChart.attr('disabled', true).addClass('disabled')
               $countrySelect.attr('disabled', true).addClass('disabled')
               $loading.fadeIn()
 
@@ -224,37 +232,46 @@ $(document).ready(() => {
 
                 const tableObject = $.extend(true,
                   ...(args.map(snap => ({
-                    [snap.ref().toString().split('/').splice(-3)[0]] : {
-                      [snap.ref().toString().split('/').splice(-2)[0]] : snap.val()
+                    [snap.ref().toString().split('/').splice(-3)[0]]: {
+                      [snap.ref().toString().split('/').splice(-2)[0]]: snap.val()
                     }
                   })))
                 )
 
                 const tableData = Object.keys(tableObject)
-                .sort((a, b) => categories[a].localeCompare(categories[b]))
-                .map(statistic => {
-                  const difference = tableObject[statistic][country1] == tableObject[statistic][country2]
-                    ? 'yellow' : (tableObject[statistic][country1] > tableObject[statistic][country2]) ? 'green' : 'red'
-                  return `<tr class=${difference}>
+                  .sort((a, b) => categories[a].localeCompare(categories[b]))
+                  .map(statistic => {
+                    const difference = tableObject[statistic][country1] == tableObject[statistic][country2] ?
+                      'yellow' : (tableObject[statistic][country1] > tableObject[statistic][country2]) ? 'green' : 'red'
+                    return `<tr class=${difference}>
                     <td>${categories[statistic]}</td>
                     <td>${tableObject[statistic][country1].toLocaleString()}</td>
                     <td>${tableObject[statistic][country2].toLocaleString()}</td>
                   </tr>`
-                }).join('')
+                  }).join('')
 
 
 
                 $('svg').empty()
                 $('table').empty().html('<thead></thead><tbody></tbody>')
-                $('table > thead').html(`<tr><td>Statistic</td><td>${countryNames[country1]}</td><td>${countryNames[country2]}</td></tr>`)
+                $('table > thead').html(`<tr>
+                  <td>Statistic</td>
+                  <td>${countryNames[country1]} (${$yearSelect.val()})</td>
+                  <td>${countryNames[country2]} (${$yearSelect.val()})</td>
+                </tr>`)
                 $('table > tbody').html(tableData)
                 $loading.fadeOut(() => $tableContainer.fadeIn(() => {
                   $select.removeAttr('disabled').removeClass('disabled')
+                  // $showChart.removeAttr('disabled').removeClass('disabled')
                   $countrySelect.removeAttr('disabled').removeClass('disabled')
                 }))
               })
             })
           })
+        })
+
+        const showChart = (() => {
+
         })
 
         const reset = (() => {
@@ -277,9 +294,14 @@ $(document).ready(() => {
                   $($countrySelect[0]).val('USA')
                   $($countrySelect[1]).val('PHL')
                   $select.fadeIn()
+                  // $showChart.fadeIn()
                   $('.list-group-item').off().click(handler)
-                  $yearSelect.off().change(() => itemHandler())
+                  $yearSelect.off().change(() => {
+                    if ($mapContainer.is(':visible')) itemHandler()
+                    else if ($tableContainer.is(':visible')) select()
+                  })
                   $select.off().click(() => select())
+                  // $showChart.off().click(() => showChart())
                 }
               )
             )
